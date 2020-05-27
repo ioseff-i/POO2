@@ -1,19 +1,12 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Vector;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.io.*;
+import java.util.*;
 class Parser{	
 	private String fichier;
-	public Vector<Shape> formes;
+	public Stack<Shape> formes;
 	private boolean rester;
 	public Parser(String s){
 		fichier=s;
-		formes = new Vector<Shape>();
+		formes = new Stack<>();
 	}
 	public ArrayList<String> adapter(ArrayList<String> couple){
 		String[] copyCouple;
@@ -33,8 +26,7 @@ class Parser{
 				copyCouple=copy.split(",");
 				if(copyCouple[0].contains(String.valueOf('e')))
 					copyCouple[0]="0";
-				else
-					copyCouple[1]="0";
+                                else copyCouple[1]="0";
 
 				copy=copyCouple[0]+","+copyCouple[1];
 				couple.set(i,copy);
@@ -42,7 +34,7 @@ class Parser{
 			return couple;
 	}
 	public void traiter(ArrayList<String> couple, int flag, Point translate){
-		Vector<Ligne> l = new Vector<Ligne>();
+		Stack<Ligne> l = new Stack<>();
 		Ligne l2;
 		Shape s;
 		boolean avancer=false;
@@ -53,9 +45,7 @@ class Parser{
 		Point tireur1 = new Point(0,0);
 		Point tireur2 = new Point(0,0);
 		Point tmp;
-	
-
-		origineDepart=Point.add(translate,Point.convertir(couple.get(0)));
+        origineDepart=Point.add(translate,Point.convertir(couple.get(0)));
 		l2=new Ligne(ancien,ancien,ancien,ancien);
 		l.add(l2);
 		for(int i=1;i<couple.size();i++){
@@ -69,8 +59,7 @@ class Parser{
 				}
 			}
 			
-			else if(couple.get(i).contains("c"))
-			{
+			else if(couple.get(i).contains("c")){
 				flag=2;
 				avancer=true;
 			}
@@ -81,100 +70,75 @@ class Parser{
 				avancer=true;
 				if(couple.get(i).contains("M"))
 				{
-			//		flag=6;
+			
 					tmp = Point.add(Point.convertir(couple.get(i+1)),translate);
 					origine = Point.sub(tmp,origine);
 				}
 			}
 			
-			else if(couple.get(i).contains("C"))
-			{
+			else if(couple.get(i).contains("C")){
 				flag=4;
 				avancer=true;
 			}
 			
-			else if(couple.get(i).contains("z"))
-			{
+			else if(couple.get(i).contains("z")){
 				flag=5;
 				avancer=true;
 			}
 
-			if(avancer)
-			{
+			if(avancer){
 				i++;
 				avancer=false;	
 			}
 
-			switch(flag)
-			{
+			switch(flag){
 				case 1:
-			
-					nouveau=Point.add(ancien,Point.convertir(couple.get(i)));
-					l2=new Ligne(ancien,nouveau,ancien,nouveau);
-					//l2=new Ligne(ancien,nouveau,null,null);
-
-
-					l.add(l2);
-					ancien=nouveau;
-
-					break;
+                                    nouveau=Point.add(ancien,Point.convertir(couple.get(i)));
+                                    l2=new Ligne(ancien,nouveau,ancien,nouveau);
+                                    l.add(l2);
+                                    ancien=nouveau;
+                                    break;
 
 				case 2:
-					tireur1=Point.add(ancien,Point.convertir(couple.get(i)));
-					i++;
-					tireur2=Point.add(ancien,Point.convertir(couple.get(i)));
-					i++;
-					nouveau=Point.add(ancien,Point.convertir(couple.get(i)));
-
-					l2=new Ligne(ancien,nouveau,tireur1,tireur2);
-					l.add(l2);
-					ancien=nouveau;
-
-					break;
+                                    tireur1=Point.add(ancien,Point.convertir(couple.get(i)));
+                                    i++;
+                                    tireur2=Point.add(ancien,Point.convertir(couple.get(i)));
+                                    i++;
+                                    nouveau=Point.add(ancien,Point.convertir(couple.get(i)));
+                                    l2=new Ligne(ancien,nouveau,tireur1,tireur2);
+                                    l.add(l2);
+                                    ancien=nouveau;
+                                    break;
 
 				case 3:
-			
-					tmp=Point.add(translate,Point.convertir(couple.get(i)));
-					nouveau=Point.sub(tmp,origineDepart);
-
-					l2=new Ligne(ancien,nouveau,ancien,nouveau);
-					//l2=new Ligne(ancien,nouveau,null,null);
-
-					l.add(l2);
-					ancien=nouveau;
-
-					break;
+                                    tmp=Point.add(translate,Point.convertir(couple.get(i)));
+                                    nouveau=Point.sub(tmp,origineDepart);
+                                    l2=new Ligne(ancien,nouveau,ancien,nouveau);
+                                    l.add(l2);
+                                    ancien=nouveau;
+                                    break;
 				case 4:
-
-					tmp=Point.add(translate,Point.convertir(couple.get(i)));
-					tireur1=Point.sub(tmp,origineDepart);
-					i++;
-
-					tmp=Point.add(translate,Point.convertir(couple.get(i)));
-					tireur2=Point.sub(tmp,origineDepart);
-					i++;
-
-					tmp=Point.add(translate,Point.convertir(couple.get(i)));
-					nouveau=Point.sub(tmp,origineDepart);
-
-					l2=new Ligne(ancien,nouveau,tireur1,tireur2);
-					l.add(l2);
-					ancien=nouveau;
-
-					break;
+                                    tmp=Point.add(translate,Point.convertir(couple.get(i)));
+                                    tireur1=Point.sub(tmp,origineDepart);
+                                    i++;
+                                    tmp=Point.add(translate,Point.convertir(couple.get(i)));
+                                    tireur2=Point.sub(tmp,origineDepart);
+                                    i++;
+                                    tmp=Point.add(translate,Point.convertir(couple.get(i)));
+                                    nouveau=Point.sub(tmp,origineDepart);
+                                    l2=new Ligne(ancien,nouveau,tireur1,tireur2);
+                                    l.add(l2);
+                                    ancien=nouveau;
+                                    break;
 				case 5:
-					
-					if(i<couple.size() && !(couple.get(i).contains("m")))
-					{
-						l2=new Ligne(ancien,origine,ancien,origine);
-						l.add(l2);
-						ancien=origine;
-					}
-					else
-						i--;
-
-					if(i==(couple.size()-1))
-					{
+                                    if(i<couple.size() && !(couple.get(i).contains("m"))){
+					l2=new Ligne(ancien,origine,ancien,origine);
+					l.add(l2);
+					ancien=origine;
+                                    }
+                                    else
+					i--;
+                                    if(i==(couple.size()-1)){
 						l2=new Ligne(ancien,origine,ancien,origine);
 						l.add(l2);
 					}
@@ -218,13 +182,11 @@ class Parser{
 		String[] mega = new String[1000];
 		rester=true;
 
-		try
-		{
+		try{
 			br = new BufferedReader(new FileReader(fichier));
 		}
 
-		catch(FileNotFoundException exc)
-		{
+		catch(FileNotFoundException exc){
 			return;
 		}
 
@@ -236,7 +198,7 @@ class Parser{
 				{
 					alarme--;
 
-					if(lettre=='t')//recupere le translate du groupe
+					if(lettre=='t')
 					{
 						br.read(mot,0,5);
 						if(mot[0]=='r' && mot[1]=='a' && mot[2]=='n' && mot[3]=='s' && mot[4]=='l')
@@ -248,7 +210,7 @@ class Parser{
 						}
 					}
 
-					if(lettre=='g' && br.read()=='>')//alors c'est fini
+					if(lettre=='g' && br.read()=='>')
 					{
 						br.close();
 						return;
@@ -259,7 +221,7 @@ class Parser{
 					
 
 
-					if(alarme==1 && lettre=='g')//alors on entre dans un vrai groupe
+					if(alarme==1 && lettre=='g')
 					{
 						rester=true;
 						couple.clear();
@@ -267,15 +229,14 @@ class Parser{
 						premier=new Point(0,0);
 						while((lettre=br.read()) != -1)
 						{
-							if(lettre=='g' && br.read()=='>')//sors du groupe
+							if(lettre=='g' && br.read()=='>')
 							{
 								traiter(couple,flag,translateGroupe);
 								flag=1;
 								break;
 							}
 
-							if(lettre=='t')//modifie le translate du groupe
-							{
+							if(lettre=='t'){
 								br.read(mot,0,5);
 								if(mot[0]=='r' && mot[1]=='a' && mot[2]=='n' && mot[3]=='s' && mot[4]=='l')
 								{
@@ -320,16 +281,16 @@ class Parser{
 						}
 					}
 
-					if(alarme==1 && lettre=='p')//alors on entre dans un path donc une forme
+					if(alarme==1 && lettre=='p')
 					{
 						rester=true;
 						translateLocal= new Point(0,0);
 						br.mark(8000);
 
-						while((lettre=br.read()) != '>')//premier tour de path
+						while((lettre=br.read()) != '>')
 						{
 
-							if(lettre=='t')//recupere le translate local
+							if(lettre=='t')
 							{
 								br.read(mot,0,5);
 								if(mot[0]=='r' && mot[1]=='a' && mot[2]=='n' && mot[3]=='s' && mot[4]=='l')
@@ -346,8 +307,7 @@ class Parser{
 						br.reset();
 						translate=Point.add(translateGroupe,translateLocal);
 
-						while((lettre=br.read()) != '>' && rester)//tant que c'est pas la fin de path
-						{
+						while((lettre=br.read()) != '>' && rester){
 							if(lettre=='d')
 							{
 								br.read(mot,0,4);
@@ -374,7 +334,7 @@ class Parser{
 		}
 
 		br.close();
-		return;
 		}
 
 } 
+

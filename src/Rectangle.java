@@ -3,12 +3,12 @@ import java.util.*;
 class Rectangle
 {
 
-	public Vector<Ligne> ligne;
+	public Stack<Ligne> ligne;
 	public Point min;
 	public Point max;
-	private boolean remplit;
+	
 
-	public Rectangle(Vector<Ligne> l)
+	public Rectangle(Stack<Ligne> l)
 	{
 		ligne=l;
 		if(l.size()>0)
@@ -19,7 +19,7 @@ class Rectangle
 	}
 	public Rectangle()
 	{
-		ligne=new Vector<Ligne>();
+		ligne=new Stack<Ligne>();
 	}
 	
 	public void addM(Ligne l)
@@ -97,9 +97,9 @@ class Rectangle
 		}
 	}
 
-	public Vector<Rectangle> subdiviser_rect(Point moy)
+	public Stack<Rectangle> subdiviser_rect(Point moy)
 	{
-		Vector<Rectangle> rect=new Vector<Rectangle>();
+		Stack<Rectangle> rect=new Stack<Rectangle>();
 
 		if (max.x-min.x<moy.x && max.y-min.y<moy.y)
 		{
@@ -145,7 +145,7 @@ class Rectangle
 	{
 		Point t_min=null,t_max=null;
 		int c1,c2;
-		Vector<Integer> remove= new Vector<Integer>();
+		Stack<Integer> remove= new Stack<Integer>();
 		for (int i=0;i<ligne.size();i++) 
 		{
 			Point p1=ligne.elementAt(i).pDepart.clone();
@@ -238,7 +238,7 @@ class Rectangle
 
 	private Rectangle top_left()
 	{
-		Vector<Ligne> l=new Vector<Ligne>();
+		Stack<Ligne> l=new Stack<Ligne>();
 		double minx=min.x+(max.x-min.x)/2;
 		double miny=min.y+(max.y-min.y)/2;
 		for (Ligne ln:ligne) 
@@ -252,7 +252,7 @@ class Rectangle
 
 	private Rectangle top_right()
 	{
-		Vector<Ligne> l=new Vector<Ligne>();
+		Stack<Ligne> l=new Stack<Ligne>();
 		double minx=min.x+(max.x-min.x)/2;
 		double miny=min.y+(max.y-min.y)/2;
 		for (Ligne ln:ligne) 
@@ -269,7 +269,7 @@ class Rectangle
 
 	private Rectangle bottom_left()
 	{
-		Vector<Ligne> l=new Vector<Ligne>();
+		Stack<Ligne> l=new Stack<Ligne>();
 		double minx=min.x+(max.x-min.x)/2;
 		double miny=min.y+(max.y-min.y)/2;
 		for (Ligne ln:ligne) 
@@ -286,7 +286,7 @@ class Rectangle
 
 	private Rectangle bottom_right()
 	{
-		Vector<Ligne> l=new Vector<Ligne>();
+		Stack<Ligne> l=new Stack<Ligne>();
 		double minx=min.x+(max.x-min.x)/2;
 		double miny=min.y+(max.y-min.y)/2;
 		for (Ligne ln:ligne) 
@@ -312,9 +312,9 @@ class Rectangle
 		return r;
 	}
 
-	public static Vector<Rectangle> vect_clone(Vector<Rectangle> rects)
+	public static Stack<Rectangle> vect_clone(Stack<Rectangle> rects)
 	{
-		Vector<Rectangle> r=new Vector<Rectangle>();
+		Stack<Rectangle> r=new Stack<Rectangle>();
 		for (Rectangle rect:rects)
 			r.add(rect.clone());
 		return r;

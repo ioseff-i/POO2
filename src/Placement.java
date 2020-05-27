@@ -2,22 +2,20 @@ import java.awt.Graphics;
 import java.awt.Color;
 import javax.swing.JPanel; 
 import java.util.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.io.IOException;
 
 
 class Placement extends JPanel 
 {
-	public Vector<Shape> s;
+	public Stack<Shape> s;
 
 	private boolean show_rect;
 	private boolean show_point;
 	
 	public Placement()
 	{
-		s= new Vector<Shape>();
+		s= new Stack<Shape>();
 		show_point=false;
 		show_rect=false;
 		
@@ -25,7 +23,7 @@ class Placement extends JPanel
 	}
 
 
-	public Placement(Vector<Shape> vct_s)
+	public Placement(Stack<Shape> vct_s)
 	{
 		s=vct_s;
 		show_point=false;
@@ -37,7 +35,7 @@ class Placement extends JPanel
 	{
 		int ord=0,id=-1;
 		double tmp;
-		Vector<Shape> vct_s= new Vector<Shape>();
+		Stack<Shape> vct_s= new Stack<Shape>();
 		for(Shape shape: s)
 		{
 			shape.order=-1;
@@ -92,16 +90,16 @@ class Placement extends JPanel
 
 	public void replaceAll()
 	{
-		Vector<Shape> vct_s=new Vector<Shape>();
+		Stack<Shape> vct_s=new Stack<Shape>();
 		for(Shape shape: s)
 			replace(vct_s, shape);
 	}
 
-	private void replace(Vector<Shape> vct_s, Shape sh)
+	private void replace(Stack<Shape> vct_s, Shape sh)
 	{
   		double offset_x=99999999,offset_y=0;
   		double height=(3543.0-(sh.max.y-sh.min.y))/1400.0;
-  		//double height=3543.0/6.0;
+  		
   		for (int i=0;i<1400;i++) 
   		{
   			double tmp_x=0;
@@ -167,11 +165,14 @@ class Placement extends JPanel
 			}
 			if (show_rect)
 			{
-				g.setColor(Color.RED);
+				g.setColor(Color.BLACK);
 				for(Rectangle rect : sh.rect)
 					{
 						g.drawRect ((int)(sh.position.x+rect.min.x)/5, (int)(sh.position.y+rect.min.y)/5,
 				    	 (int)(rect.max.x-rect.min.x)/5, (int)(rect.max.y-rect.min.y)/5); 
+						g.fillRect((int)(sh.position.x+rect.min.x)/5, (int)(sh.position.y+rect.min.y)/5,50,50);
+
+
 					}
 				
 			}

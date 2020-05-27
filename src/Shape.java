@@ -2,11 +2,11 @@ import java.util.*;
 
 public class Shape
 {	
-	public Vector<Ligne> ligne;
-	public Vector<Rectangle> rect;
-	public Vector<Rectangle> creux; 
-	public Vector<Ligne> top; 
-	public Vector<Ligne> bot; 
+	public Stack<Ligne> ligne;
+	public Stack<Rectangle> rect;
+	public Stack<Rectangle> creux; 
+	public Stack<Ligne> top; 
+	public Stack<Ligne> bot; 
 	public Point max;
 	public Point min;
 	public Point position;
@@ -14,18 +14,17 @@ public class Shape
 	public int order;
 	public double taille;
 
-	private int sh;
-	private static int sh_g=0;
+	
 
 	public Shape()
 	{
 	}
 
-	public Shape(Vector<Ligne> l)
+	public Shape(Stack<Ligne> l)
 	{
-		sh=sh_g++;
+		
 		ligne=Ligne.conv_curve(l);
-		rect=new Vector<Rectangle>();
+		rect=new Stack<Rectangle>();
 		rect.add(new Rectangle(ligne));
 		min=rect.elementAt(0).min.clone();
 		max=rect.elementAt(0).max.clone();
@@ -36,7 +35,7 @@ public class Shape
 
 	public void test()
 	{
-		Vector<Rectangle> tmp=new Vector<Rectangle>();
+		Stack<Rectangle> tmp=new Stack<Rectangle>();
 		Point moy= new Point(0,0);
 		for (Rectangle r:rect)
 			moy.moyenne(r.min, r.max);
@@ -59,7 +58,7 @@ public class Shape
 
 	private void setTop()
 	{
-		Vector<Ligne> new_t=new Vector<Ligne>();
+		Stack<Ligne> new_t=new Stack<Ligne>();
 		int i;
 		boolean ins;
 		for (Rectangle r:rect)
@@ -79,8 +78,7 @@ public class Shape
 			if (ins)
 				if(i==new_t.size())
 					new_t.add(new Ligne(r.min,new Point(r.max.x, r.min.y)));
-				//else
-				//	insert(new_t,i,r);
+				
 			
 		}
 		top=new_t;
@@ -88,7 +86,7 @@ public class Shape
 
 	private void setBot()
 	{
-		Vector<Ligne> new_t=new Vector<Ligne>();
+		Stack<Ligne> new_t=new Stack<Ligne>();
 		int i;
 		boolean ins;
 		for (Rectangle r:rect)
@@ -108,16 +106,14 @@ public class Shape
 			if (ins)
 				if(i==new_t.size())
 					new_t.add(new Ligne(new Point(r.min.x, r.max.y), r.max));
-				//else
-				//	insert(new_t,i,r);
-			
+				
 		}
 		bot=new_t;
 	}
 
-	private  Vector<Ligne> insert(Vector<Ligne> tab, int i, Ligne val)
+	private  Stack<Ligne> insert(Stack<Ligne> tab, int i, Ligne val)
 	{
-		Vector<Ligne> new_t=new Vector<Ligne>();
+		Stack<Ligne> new_t=new Stack<Ligne>();
 		for(int j=0; j<tab.size();j++)
 		{
 			if (j == i)
